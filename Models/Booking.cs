@@ -18,5 +18,19 @@ namespace AirlineApp.Models
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public Booking() 
+        {
+        Id = Guid.NewGuid();
+        }
+
+        public Booking(Guid id, Guid flightClassId, Guid flightScheduleId, Guid customerId, DateTime createdAt)
+        {
+            Id = id;
+            FlightClassId = flightClassId;
+            FlightScheduleId = flightScheduleId;
+            CustomerId = customerId;
+            CreatedAt = createdAt;
+        }
     }
 }

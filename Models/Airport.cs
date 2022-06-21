@@ -14,5 +14,16 @@ namespace AirlineApp.Models
         public ICollection<FlightSchedule> ArrivalAirport { get; set; }
         public ICollection<FlightSchedule> DepartureAirport { get; set; }
 
+        public Airport() 
+        {
+        Id = Guid.NewGuid();
+        }
+
+        public Airport(Guid id, string name, string country)
+        {
+            Id = id;
+            Name = name;
+            Country = country;
+        }
     }
 }

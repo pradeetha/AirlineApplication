@@ -17,9 +17,10 @@ namespace AirlineApplication.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private ApplicationDbContext context;
         public AccountController()
         {
+            context = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -139,6 +140,8 @@ namespace AirlineApplication.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            //var users = context.Users.ToList();
+
             return View();
         }
 
@@ -149,10 +152,12 @@ namespace AirlineApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -423,6 +428,12 @@ namespace AirlineApplication.Controllers
             base.Dispose(disposing);
         }
 
+        [Authorize(Roles ="Admin")]
+        public  ActionResult AllUsersRoles()
+        {
+            var users = context.Roles.Select(role => role.Users).ToList();
+            return View();
+        }
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

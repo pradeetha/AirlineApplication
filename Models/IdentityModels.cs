@@ -33,6 +33,9 @@ namespace AirlineApplication.Models
         public ApplicationDbContext()
             : base("AirlineConnectionString", throwIfV1Schema: false)
         {
+            Database.SetInitializer<ApplicationDbContext>(null);
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public static ApplicationDbContext Create()
@@ -42,48 +45,53 @@ namespace AirlineApplication.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Customer Entity Relationships
+            base.OnModelCreating(modelBuilder);
+            //Customer Entity relationships
             modelBuilder.Entity<Customer>().HasKey(x => x.Id);
 
             modelBuilder.Entity<Customer>()
                 .HasMany(x => x.Bookings)
-                .WithOptional(x => x.Customer)
+                .WithRequired(x => x.Customer)
                 .HasForeignKey(x => x.CustomerId)
                 .WillCascadeOnDelete(true);
-                ;
-            //Airport Entity Realtionships
+            ;
+            //Airport Entity realtionships
             modelBuilder.Entity<Airport>()
                 .HasKey(x => x.Id);
 
             modelBuilder.Entity<Airport>()
                 .HasMany(e => e.ArrivalAirport)
                 .WithRequired(e => e.ArrivalAirport)
-                .HasForeignKey(e => e.ArrivalAirportId);
+                .HasForeignKey(e => e.ArrivalAirportId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Airport>()
                 .HasMany(e => e.DepartureAirport)
                 .WithRequired(e => e.DepartureAirport)
-                .HasForeignKey(e => e.DepartureAirportId);
+                .HasForeignKey(e => e.DepartureAirportId)
+                .WillCascadeOnDelete(false);
 
             //Booking Entity relationships
             modelBuilder.Entity<Booking>().HasKey(x => x.Id);
 
-            //FlightSchedule Entity Relationships
+            //FlightSchedule Entity relationships
             modelBuilder.Entity<FlightSchedule>().HasKey(x => x.Id);
 
             modelBuilder.Entity<FlightSchedule>()
                  .HasMany(e => e.Bookings)
                  .WithRequired(x => x.FlightSchedule)
-                 .HasForeignKey(e => e.FlightScheduleId);
+                 .HasForeignKey(e => e.FlightScheduleId)
+                 .WillCascadeOnDelete(false);
 
-            //FlightClass Entity Relationships
+            //FlightClass Entity relationships
             modelBuilder.Entity<FlightClass>().HasKey(x => x.Id);
 
             modelBuilder.Entity<FlightClass>()
                  .HasMany(e => e.Bookings)
                  .WithRequired(x => x.FlightClass)
                  .HasForeignKey(e => e.FlightClassId);
-            //Flight Entity Relationships
+
+            //Flight Entity relationships
             modelBuilder.Entity<Flight>().HasKey(x => x.Id);
 
             modelBuilder.Entity<Flight>()
@@ -94,14 +102,22 @@ namespace AirlineApplication.Models
             modelBuilder.Entity<Flight>()
                 .HasMany(e => e.FlightSchedule)
                 .WithRequired(e => e.Flight)
-                .HasForeignKey(e => e.FlightId);
+                .HasForeignKey(e => e.FlightId)
+                .WillCascadeOnDelete(false);
 
-
-
-
-
-
-
+            //storage precedure
+            modelBuilder.Entity<Customer>()
+                .MapToStoredProcedures();
+            modelBuilder.Entity<Airport>()
+              .MapToStoredProcedures();
+            modelBuilder.Entity<Flight>()
+                .MapToStoredProcedures();
+            modelBuilder.Entity<FlightSchedule>()
+                .MapToStoredProcedures();
+            modelBuilder.Entity<FlightClass>()
+              .MapToStoredProcedures();
+            modelBuilder.Entity<Booking>()
+            .MapToStoredProcedures();
 
         }
     }

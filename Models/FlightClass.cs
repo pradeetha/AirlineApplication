@@ -15,5 +15,19 @@ namespace AirlineApp.Models
         public Guid FlightId { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }
+
+        FlightClass()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public FlightClass (Guid id, string name, decimal price, string description, Guid flightId)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            Description = description;          
+            FlightId = flightId;           
+        }   
     }
 }

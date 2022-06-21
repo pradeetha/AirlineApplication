@@ -20,5 +20,19 @@ namespace AirlineApp.Models
 
         public ICollection<Booking> Bookings { get; set; }
 
+        public FlightSchedule()
+        {
+            Id = Guid.NewGuid();
+        }
+        public FlightSchedule(Guid id, DateTime departureAt, DateTime arriveAt, Guid arrivalAirportId, Guid departureAirportId, Guid flightId)
+        {
+            Id = id;
+            DepartureAt = departureAt;
+            ArriveAt = arriveAt;        
+            ArrivalAirportId = arrivalAirportId;
+            DepartureAirportId = departureAirportId;          
+            FlightId = flightId;
+          
+        }
     }
 }
