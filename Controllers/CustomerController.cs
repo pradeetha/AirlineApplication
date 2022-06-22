@@ -43,7 +43,7 @@ namespace AirlineApplication.Controllers
         public ActionResult Create()
         {
             
-            return View("Register");
+            return View("Register", new Customer());
         }
 
         public ActionResult Edit(string id)
@@ -88,7 +88,7 @@ namespace AirlineApplication.Controllers
             
         }
 
-        [HttpPatch]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ProcessUpdate(Customer customer)
         {
@@ -99,7 +99,7 @@ namespace AirlineApplication.Controllers
                 {
                     query.FirstName = customer.FirstName;
                     query.LastName = customer.LastName;
-                    query.Phone = customer.Email;
+                    query.Phone = customer.Phone;
                     query.Email = customer.Email;
                     context.SaveChanges();
                     return View("Details", customer);

@@ -10,7 +10,7 @@ namespace AirlineApp.Models
     public class Customer
     {
         
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "First name is required")]
         [StringLength(20)]

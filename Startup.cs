@@ -1,6 +1,7 @@
 ﻿using AirlineApplication.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Owin;
 using Owin;
 
@@ -12,6 +13,7 @@ namespace AirlineApplication
 
         public void Configuration(IAppBuilder app)
         {
+            
             ConfigureAuth(app);
             CreateDefaultAdminRole();
         }
@@ -47,6 +49,7 @@ namespace AirlineApplication
                 }
             }
         }
+
 
     }
 }
